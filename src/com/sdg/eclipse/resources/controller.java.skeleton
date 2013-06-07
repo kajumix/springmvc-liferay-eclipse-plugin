@@ -1,0 +1,26 @@
+package com.mycomapany;
+ 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.portlet.bind.annotation.RenderMapping;
+ 
+/**
+ * View controller.
+ *
+ * 
+ */
+@Controller("viewController")
+@RequestMapping(value = "view")
+public class ViewController {
+ 
+ 
+  /**
+   * Render.
+   *
+   * @return the string
+   */
+  @RenderMapping
+  public String render() {
+    return "view";
+  }
+}
