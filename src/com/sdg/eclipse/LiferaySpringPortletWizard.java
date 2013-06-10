@@ -1,12 +1,14 @@
 package com.sdg.eclipse;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -23,7 +25,22 @@ import org.eclipse.ui.IWorkbench;
 
 public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 
+	private static final String CONTEXT_SEKELOTON_XML = "context-sekeloton.xml";
+	private static final String CONTROLLER_JAVA_SKELETON = "controller.java.skeleton";
+	private static final String LIFERAY_PLUGIN_PACKAGE_PROPERTIES = "docroot/WEB-INF/liferay-plugin-package.properties";
 	private static final String RESOURCES_FOLDER = "com/sdg/eclipse/resources/";
+	private static final String[] DEPENDENCIES = new String[] {
+			"spring-aop.jar", "spring-asm.jar", "spring-aspects.jar",
+			"spring-beans.jar", "spring-context-support.jar",
+			"spring-context.jar", "spring-core.jar", "spring-expression.jar",
+			"spring-jdbc.jar", "spring-jms.jar", "spring-orm.jar",
+			"spring-oxm.jar", "spring-transaction.jar",
+			"spring-web-portlet.jar", "spring-web-servlet.jar",
+			"spring-web-struts.jar", "spring-web.jar", "commons-beanutils.jar",
+			"commons-collections.jar", "commons-fileupload.jar",
+			"commons-io.jar", "commons-lang.jar", "jstl-api.jar",
+			"jstl-impl.jar", "alloy-taglib.jar", "liferay-icu4j.jar",
+			"liferay-yui-compressor.jar" };
 
 	LiferaySpringWizardPageOne pageOne;
 
@@ -39,22 +56,85 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		Map<String, String> sourceReplaceMap = new HashMap<String, String>();
 		Map<String, String> jspReplaceMap = new HashMap<String, String>();
 		Map<String, String> configReplaceMap = new HashMap<String, String>();
-		
+
 		sourceReplaceMap.put("com.mycomapany", pageOne.getPackage());
 		sourceReplaceMap.put("ViewController", pageOne.getClassName());
 		configReplaceMap.put("com.myowncompany", pageOne.getPackage());
-		configReplaceMap.put("MyFirstSpringMVCTestController", pageOne.getClassName());
-		
-		createFile(getSourceFolder(), pageOne.getClassName()	+ ".java", getResource("controller.java.skeleton"), sourceReplaceMap);
-		createFile(getJSPFolder(), "view.jsp", getResource("view.jsp"), jspReplaceMap);
-		createFile(getConfigFolder(),pageOne.getPortletName() + "-portlet.xml", getResource("context-sekeloton.xml"),configReplaceMap);
+		configReplaceMap.put("MyFirstSpringMVCTestController",
+				pageOne.getClassName());
+
+		createFile(getSourceFolder(), getJavaName(),getResource(CONTROLLER_JAVA_SKELETON), sourceReplaceMap);
+		createFile(getJSPFolder(), getJSPName(), getResource(getJSPName()),	jspReplaceMap);
+		createFile(getConfigFolder(),getPortletXMLName(),getResource(CONTEXT_SEKELOTON_XML), configReplaceMap);
+		updateLiferayProperties();
+
 		return true;
 	}
 
-	public String getString(InputStream is) {
+	private String getPortletXMLName() {
+		return pageOne.getPortletName() + "-portlet.xml";
+	}
 
-		Scanner scanner = new Scanner(is).useDelimiter("\\A");
-		return scanner.hasNext() ? scanner.next() : "";
+	private String getJSPName() {
+		return "view.jsp";
+	}
+
+	private String getJavaName() {
+		return pageOne.getClassName() + ".java";
+	}
+
+	private void updateLiferayProperties() {
+		Properties properties = new Properties();
+		InputStream propertiesInputStream = null;
+		ByteArrayOutputStream propertiesOutputStream = null;
+		try {
+			propertiesInputStream = pageOne.getChosenProject()
+					.getFile(LIFERAY_PLUGIN_PACKAGE_PROPERTIES).getContents();
+			properties.load(propertiesInputStream);
+			String portalDependencies = (String) properties
+					.get("portal-dependency-jars");
+			Set<String> portalDependenciesSet = new HashSet<String>(
+					Arrays.asList(portalDependencies.split(",")));
+			portalDependenciesSet.addAll(Arrays.asList(DEPENDENCIES));			
+			portalDependencies = commaSeparated(portalDependenciesSet);
+			properties.setProperty("portal-dependency-jars",portalDependencies);			
+			propertiesOutputStream = new ByteArrayOutputStream();
+			properties.store(propertiesOutputStream,null);
+			pageOne.getChosenProject().getFile(LIFERAY_PLUGIN_PACKAGE_PROPERTIES).setContents(new ByteArrayInputStream(propertiesOutputStream.toByteArray()), IFile.FORCE, null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				propertiesInputStream.close();
+				propertiesOutputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private String commaSeparated(Set<String> portalDependenciesSet) {
+		String result = "";
+		for (String string : portalDependenciesSet) {
+			result += string +",";
+		}
+		return result;
+	}
+
+	public String getString(InputStream is) {
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner(is).useDelimiter("\\A");
+			return scanner.hasNext() ? scanner.next() : "";
+		}finally {
+			scanner.close();
+		}
+		
 
 	}
 
@@ -78,15 +158,16 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 
 	}
 
-	private IFile createFile(String folderStr, String fileName, String resource, Map<String, String> replaceMap) {
+	private IFile createFile(String folderStr, String fileName,
+			String resource, Map<String, String> replaceMap) {
 		IFolder folder = ResourcesPlugin.getWorkspace().getRoot()
 				.getFolder(new Path(folderStr));
 		IFile classFile = folder.getFile(fileName);
 		InputStream inputStream = null;
 		try {
 			inputStream = getClass().getClassLoader().getResourceAsStream(
-					resource);			 
-			String str = replace(getString(inputStream),replaceMap);
+					resource);
+			String str = replace(getString(inputStream), replaceMap);
 			classFile.create(new ByteArrayInputStream(str.getBytes()), false,
 					null);
 		} catch (CoreException e) {

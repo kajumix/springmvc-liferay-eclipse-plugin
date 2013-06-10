@@ -17,6 +17,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -33,6 +34,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	private Text categoryText;
 	private Button instanceAbleCheck;
 	private Text classText;
+	private Text jarFolderText;
 
 	public String getPortletName() {
 		return portletNameText.getText();
@@ -71,9 +73,23 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		createBrowseSourceFolder(container);
 		createBrowsePackage(container);
 		createClass(container);
+		createJarLocation(container);
+		
 
 		setControl(container);
 
+	}
+
+	private void createJarLocation(Composite container) {
+		page.makeLabel(container, "Spring jars folder (optional)");
+		SelectionAdapter listener = new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleBrowseJarLocation();
+			}
+		};
+		jarFolderText = page.makeTextAndBrowse(container, listener);
+
+		
 	}
 
 	private void createClass(Composite container) {
@@ -95,7 +111,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	}
 
 	private void createCategoryName(Composite container) {
-		page.makeLabel(container, "Category");
+		page.makeLabel(container, "Category (optional)");
 		categoryText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		categoryText.setLayoutData(gridData);
@@ -160,6 +176,11 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		}
 	}
 
+	private void handleBrowseJarLocation() {
+		DirectoryDialog dialog = new DirectoryDialog(getShell());
+		jarFolderText.setText(dialog.open());
+		
+	}
 	private void createPortletName(Composite container) {
 		page.makeLabel(container, "Portlet name");
 		portletNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
