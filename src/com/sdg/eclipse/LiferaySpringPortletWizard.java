@@ -2,9 +2,14 @@ package com.sdg.eclipse;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,18 +34,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 	private static final String CONTROLLER_JAVA_SKELETON = "controller.java.skeleton";
 	private static final String LIFERAY_PLUGIN_PACKAGE_PROPERTIES = "docroot/WEB-INF/liferay-plugin-package.properties";
 	private static final String RESOURCES_FOLDER = "com/sdg/eclipse/resources/";
-	private static final String[] DEPENDENCIES = new String[] {
-			"spring-aop.jar", "spring-asm.jar", "spring-aspects.jar",
-			"spring-beans.jar", "spring-context-support.jar",
-			"spring-context.jar", "spring-core.jar", "spring-expression.jar",
-			"spring-jdbc.jar", "spring-jms.jar", "spring-orm.jar",
-			"spring-oxm.jar", "spring-transaction.jar",
-			"spring-web-portlet.jar", "spring-web-servlet.jar",
-			"spring-web-struts.jar", "spring-web.jar", "commons-beanutils.jar",
-			"commons-collections.jar", "commons-fileupload.jar",
-			"commons-io.jar", "commons-lang.jar", "jstl-api.jar",
-			"jstl-impl.jar", "alloy-taglib.jar", "liferay-icu4j.jar",
-			"liferay-yui-compressor.jar" };
+	
 
 	LiferaySpringWizardPageOne pageOne;
 
@@ -66,9 +60,44 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		createFile(getSourceFolder(), getJavaName(),getResource(CONTROLLER_JAVA_SKELETON), sourceReplaceMap);
 		createFile(getJSPFolder(), getJSPName(), getResource(getJSPName()),	jspReplaceMap);
 		createFile(getConfigFolder(),getPortletXMLName(),getResource(CONTEXT_SEKELOTON_XML), configReplaceMap);
-		updateLiferayProperties();
+		updateLiferayProperties(addJars());
+		
 
 		return true;
+	}
+
+	private Collection<String> addJars() {
+		
+		Collection<String> dependencies = new ArrayList<String>();
+		String[] jarDependencies = pageOne.getJarDependencies().split(",");
+		IFolder folder = pageOne.getChosenProject().getFolder("/docroot/WEB-INF/lib");
+		for (String jar : jarDependencies) {
+			File file = new File(jar);
+			IFile dest = folder.getFile(file.getName());
+			FileInputStream source = null;
+			try {
+				source = new FileInputStream(file);
+				dest.create(source, true, null);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				try {
+					source.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			dependencies.add(file.getName());
+		}
+		return dependencies;
+		
+		
 	}
 
 	private String getPortletXMLName() {
@@ -83,7 +112,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		return pageOne.getClassName() + ".java";
 	}
 
-	private void updateLiferayProperties() {
+	private void updateLiferayProperties(Collection<String> dependencies) {
 		Properties properties = new Properties();
 		InputStream propertiesInputStream = null;
 		ByteArrayOutputStream propertiesOutputStream = null;
@@ -95,7 +124,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 					.get("portal-dependency-jars");
 			Set<String> portalDependenciesSet = new HashSet<String>(
 					Arrays.asList(portalDependencies.split(",")));
-			portalDependenciesSet.addAll(Arrays.asList(DEPENDENCIES));			
+			portalDependenciesSet.addAll(dependencies);			
 			portalDependencies = commaSeparated(portalDependenciesSet);
 			properties.setProperty("portal-dependency-jars",portalDependencies);			
 			propertiesOutputStream = new ByteArrayOutputStream();

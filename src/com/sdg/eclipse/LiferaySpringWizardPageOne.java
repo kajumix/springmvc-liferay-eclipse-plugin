@@ -17,7 +17,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -34,7 +34,8 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	private Text categoryText;
 	private Button instanceAbleCheck;
 	private Text classText;
-	private Text jarFolderText;
+	private Text jarDependenciesText;
+
 
 	public String getPortletName() {
 		return portletNameText.getText();
@@ -54,6 +55,10 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 
 	public String getPackage() {
 		return packageText.getText();
+	}
+	
+	public String getJarDependencies() {
+		return jarDependenciesText.getText();
 	}
 
 	protected LiferaySpringWizardPageOne(String pageName) {
@@ -84,10 +89,10 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		page.makeLabel(container, "Spring jars folder (optional)");
 		SelectionAdapter listener = new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				handleBrowseJarLocation();
+				handleBrowseJars();
 			}
 		};
-		jarFolderText = page.makeTextAndBrowse(container, listener);
+		jarDependenciesText = page.makeTextAndBrowse(container, listener);
 
 		
 	}
@@ -176,11 +181,22 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		}
 	}
 
-	private void handleBrowseJarLocation() {
-		DirectoryDialog dialog = new DirectoryDialog(getShell());
-		jarFolderText.setText(dialog.open());
+	private void handleBrowseJars() {
+		FileDialog dialog = new FileDialog(getShell(), SWT.MULTI);
+		dialog.setFilterExtensions(new String [] {"*.jar"});
+		dialog.open();
+		jarDependenciesText.setText(getJarList(dialog.getFilterPath(),dialog.getFileNames()));
+		
 		
 	}
+	private String getJarList(String filterPath, String[] fileNames) {
+		String jarList="";
+		for (String string : fileNames) {
+			jarList+=filterPath+"\\"+string+",";
+		}
+		return jarList;
+	}
+
 	private void createPortletName(Composite container) {
 		page.makeLabel(container, "Portlet name");
 		portletNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
