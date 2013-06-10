@@ -21,6 +21,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 	private String viewName;
 	private IProject project;
 	private String jars;
+	private String category;
 
 	public LiferaySpringPortletWizard() {
 		super();
@@ -42,6 +43,8 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		
 		new LiferayProperties(project, dependencySet).update();
 		
+		new LiferayDisplayXML(project, category, portletName).update();
+		
 		return true;
 	}
 
@@ -53,6 +56,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		viewName = portletName;
 		project = pageOne.getSelectedProject();
 		jars = pageOne.getJarDependencies();
+		category = pageOne.getCategory();
 	}
 
 	@Override

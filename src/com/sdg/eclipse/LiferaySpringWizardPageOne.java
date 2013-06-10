@@ -60,6 +60,10 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	public String getJarDependencies() {
 		return jarDependenciesText.getText();
 	}
+	
+	public String getCategory() {
+		return categoryText.getText();
+	}
 
 	protected LiferaySpringWizardPageOne(String pageName) {
 		super(pageName);
