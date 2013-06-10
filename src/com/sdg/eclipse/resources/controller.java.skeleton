@@ -1,4 +1,4 @@
-package com.mycomapany;
+package {pkg};
  
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +9,9 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
  *
  * 
  */
-@Controller("viewController")
-@RequestMapping(value = "view")
-public class ViewController {
+@Controller(value="{class}")
+@RequestMapping("VIEW")
+public class {class} {
  
  
   /**
@@ -21,6 +21,6 @@ public class ViewController {
    */
   @RenderMapping
   public String render() {
-    return "view";
+    return "{jsp}";
   }
 }

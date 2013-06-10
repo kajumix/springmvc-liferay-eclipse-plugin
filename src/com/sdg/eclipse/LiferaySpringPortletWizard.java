@@ -30,6 +30,7 @@ import org.eclipse.ui.IWorkbench;
 
 public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 
+	private static final String VIEW_JSP = "jsp-skeleton.jsp";
 	private static final String CONTEXT_SEKELOTON_XML = "context-sekeloton.xml";
 	private static final String CONTROLLER_JAVA_SKELETON = "controller.java.skeleton";
 	private static final String LIFERAY_PLUGIN_PACKAGE_PROPERTIES = "docroot/WEB-INF/liferay-plugin-package.properties";
@@ -51,14 +52,15 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		Map<String, String> jspReplaceMap = new HashMap<String, String>();
 		Map<String, String> configReplaceMap = new HashMap<String, String>();
 
-		sourceReplaceMap.put("com.mycomapany", pageOne.getPackage());
-		sourceReplaceMap.put("ViewController", pageOne.getClassName());
-		configReplaceMap.put("com.myowncompany", pageOne.getPackage());
-		configReplaceMap.put("MyFirstSpringMVCTestController",
+		sourceReplaceMap.put("\\{pkg\\}", pageOne.getPackage());
+		sourceReplaceMap.put("\\{class\\}", pageOne.getClassName());
+		sourceReplaceMap.put("\\{jsp\\}", getViewName());
+		configReplaceMap.put("\\{pkg\\}", pageOne.getPackage());
+		configReplaceMap.put("\\{class\\}",
 				pageOne.getClassName());
 
 		createFile(getSourceFolder(), getJavaName(),getResource(CONTROLLER_JAVA_SKELETON), sourceReplaceMap);
-		createFile(getJSPFolder(), getJSPName(), getResource(getJSPName()),	jspReplaceMap);
+		createFile(getJSPFolder(), getViewName()+".jsp", getResource(VIEW_JSP),	jspReplaceMap);
 		createFile(getConfigFolder(),getPortletXMLName(),getResource(CONTEXT_SEKELOTON_XML), configReplaceMap);
 		updateLiferayProperties(addJars());
 		
@@ -104,8 +106,8 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		return pageOne.getPortletName() + "-portlet.xml";
 	}
 
-	private String getJSPName() {
-		return "view.jsp";
+	private String getViewName() {
+		return pageOne.getPortletName();
 	}
 
 	private String getJavaName() {

@@ -14,7 +14,7 @@
 	<bean
 		class="org.springframework.web.portlet.mvc.annotaution.DefaultAnnotationHandlerMapping" />
 
-	<bean class="com.myowncompany.MyFirstSpringMVCTestController" />
+	<bean class="{pkg}.{class}" />
 	
 	<bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
