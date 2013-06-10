@@ -41,7 +41,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		return portletNameText.getText();
 	}
 
-	public IProject getChosenProject() {
+	public IProject getSelectedProject() {
 		return project;
 	}
 
@@ -149,7 +149,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	@SuppressWarnings("null")
 	private void handleBrowsePackage() {
 		try {
-			IJavaProject javaProject = JavaCore.create(getChosenProject());
+			IJavaProject javaProject = JavaCore.create(getSelectedProject());
 
 			SelectionDialog createPackageDialog = JavaUI.createPackageDialog(
 					getShell(), javaProject, SWT.NULL);
@@ -168,7 +168,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 
 	private void handleBrowseSourceFolder() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
-				getShell(), getChosenProject(), false,
+				getShell(), getSelectedProject(), false,
 				"Choose a source folder:");
 
 		dialog.setBlockOnOpen(true);
