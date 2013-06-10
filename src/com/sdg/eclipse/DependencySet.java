@@ -30,6 +30,7 @@ public class DependencySet {
 	}
 
 	public void addJars() {
+		if (set==null)return;
 		IFolder folder = project.getFolder("/docroot/WEB-INF/lib");
 		for (String jar : set) {
 			File file = new File(jar);
