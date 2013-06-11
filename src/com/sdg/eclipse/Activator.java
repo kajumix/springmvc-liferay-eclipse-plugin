@@ -1,4 +1,4 @@
-package newspringwizard;
+package com.sdg.eclipse;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

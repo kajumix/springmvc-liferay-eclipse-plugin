@@ -3,31 +3,6 @@
 <plugin>
 
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            name="Sample Multi-page Editor"
-            extensions="mpe"
-            icon="icons/sample.gif"
-            contributorClass="newspringwizard.editors.MultiPageEditorContributor"
-            class="newspringwizard.editors.MultiPageEditor"
-            id="newspringwizard.editors.MultiPageEditor">
-      </editor>
-   </extension>
-   <extension
-         point="org.eclipse.ui.newWizards">
-      <category
-            name="Sample Wizards"
-            id="newspringwizard">
-      </category>
-      <wizard
-            name="Sample Wizard"
-            icon="icons/sample.gif"
-            category="newspringwizard"
-            class="newspringwizard.wizards.SampleNewWizard"
-            id="newspringwizard.wizards.SampleNewWizard">
-      </wizard>
-   </extension>
-   <extension
          point="org.eclipse.ui.newWizards">
       <category
             name="Liferay"

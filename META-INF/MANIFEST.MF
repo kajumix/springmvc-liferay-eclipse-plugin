@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Newspringwizard
 Bundle-SymbolicName: newspringwizard; singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: newspringwizard.Activator
+Bundle-Activator: com.sdg.eclipse.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
