@@ -24,8 +24,7 @@ public class WebXML {
 	}
 
 	public void addSpringServlets() {
-		IFile file = project.getFolder("docroot/WEB-INF").getFile("web.xml");
-		Xml xml = new Xml(file);
+		Xml xml = new Xml(project.getFolder("docroot/WEB-INF").getFile("web.xml"));
 		Document doc = xml.getDocument();
 		determineNeeds(doc);
 		if (needViewRender) {

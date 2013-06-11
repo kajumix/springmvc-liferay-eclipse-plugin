@@ -9,7 +9,8 @@ import org.eclipse.ui.IWorkbench;
 
 public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 
-	LiferaySpringWizardPageOne pageOne;
+	private LiferaySpringWizardPageOne pageOne;
+	private LiferaySpringWizardPageTwo pageTwo;
 
 	ISelection selection;
 	IWorkbench workbench;
@@ -22,6 +23,9 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 	private IProject project;
 	private String jars;
 	private String category;
+	private String portletDisplayName;
+	private String portletTitle;
+
 
 	public LiferaySpringPortletWizard() {
 		super();
@@ -47,7 +51,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		
 		new WebXML(project).addSpringServlets();
 		
-		
+		new PortletXML(project, portletName, portletDisplayName, portletTitle).update();
 		
 		
 		return true;
@@ -62,12 +66,16 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		project = pageOne.getSelectedProject();
 		jars = pageOne.getJarDependencies();
 		category = pageOne.getCategory();
+		portletDisplayName = pageTwo.getportletDisplayName();
+		portletTitle = pageTwo.getPortletTitle();
 	}
 
 	@Override
 	public void addPages() {
 		pageOne = new LiferaySpringWizardPageOne("pageOne");
+		pageTwo = new LiferaySpringWizardPageTwo("pageTwo");
 		addPage(pageOne);
+		addPage(pageTwo);
 	}
 
 	@Override
