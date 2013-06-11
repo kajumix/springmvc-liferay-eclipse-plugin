@@ -45,6 +45,11 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		
 		new LiferayDisplayXML(project, category, portletName).update();
 		
+		new WebXML(project).addSpringServlets();
+		
+		
+		
+		
 		return true;
 	}
 
