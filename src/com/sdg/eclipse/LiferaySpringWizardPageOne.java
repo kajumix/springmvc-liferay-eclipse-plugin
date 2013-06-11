@@ -36,7 +36,6 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	private Text classText;
 	private Text jarDependenciesText;
 
-
 	public String getPortletName() {
 		return portletNameText.getText();
 	}
@@ -56,11 +55,11 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	public String getPackage() {
 		return packageText.getText();
 	}
-	
+
 	public String getJarDependencies() {
 		return jarDependenciesText.getText();
 	}
-	
+
 	public String getCategory() {
 		return categoryText.getText();
 	}
@@ -70,6 +69,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		setTitle("Create Spring MVC Portlet for Liferay");
 	}
 
+	@SuppressWarnings("restriction")
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = page.createContainer(parent, NUM_COLUMNS,
@@ -83,7 +83,6 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		createBrowsePackage(container);
 		createClass(container);
 		createJarLocation(container);
-		
 
 		setControl(container);
 
@@ -98,7 +97,6 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		};
 		jarDependenciesText = page.makeTextAndBrowse(container, listener);
 
-		
 	}
 
 	private void createClass(Composite container) {
@@ -150,7 +148,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 
 	}
 
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "restriction" })
 	private void handleBrowsePackage() {
 		try {
 			IJavaProject javaProject = JavaCore.create(getSelectedProject());
@@ -160,7 +158,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 			if (createPackageDialog.open() == ContainerSelectionDialog.OK) {
 				Object[] result = createPackageDialog.getResult();
 
-				if (result != null || result.length > 0) {
+				if (result != null && result.length > 0) {
 					IPackageFragment pkg = (IPackageFragment) result[0];
 					packageText.setText(pkg.getElementName());
 				}
@@ -170,6 +168,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		}
 	}
 
+	@SuppressWarnings("restriction")
 	private void handleBrowseSourceFolder() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
 				getShell(), getSelectedProject(), false,
@@ -187,16 +186,17 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 
 	private void handleBrowseJars() {
 		FileDialog dialog = new FileDialog(getShell(), SWT.MULTI);
-		dialog.setFilterExtensions(new String [] {"*.jar"});
+		dialog.setFilterExtensions(new String[] { "*.jar" });
 		dialog.open();
-		jarDependenciesText.setText(getJarList(dialog.getFilterPath(),dialog.getFileNames()));
-		
-		
+		jarDependenciesText.setText(getJarList(dialog.getFilterPath(),
+				dialog.getFileNames()));
+
 	}
+
 	private String getJarList(String filterPath, String[] fileNames) {
-		String jarList="";
+		String jarList = "";
 		for (String string : fileNames) {
-			jarList+=filterPath+"\\"+string+",";
+			jarList += filterPath + "\\" + string + ",";
 		}
 		return jarList;
 	}
