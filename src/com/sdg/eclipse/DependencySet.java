@@ -22,7 +22,9 @@ public class DependencySet {
 	private IProject project;
 
 	public DependencySet(String jarDependencies, IProject project) {
-		set.addAll(Arrays.asList(jarDependencies.split(",")));
+		if (jarDependencies!=null && !jarDependencies.isEmpty()) {
+			set.addAll(Arrays.asList(jarDependencies.split(",")));
+		}
 		this.project = project;
 		for (String name : set) {
 			names.add(new File(name).getName());
@@ -30,33 +32,32 @@ public class DependencySet {
 	}
 
 	public void addJars() {
-		if (set==null)return;
+		if (set==null || set.isEmpty())return;
 		IFolder folder = project.getFolder("/docroot/WEB-INF/lib");
 		for (String jar : set) {
 			File file = new File(jar);
 			IFile dest = folder.getFile(file.getName());
+			if(dest.exists()) continue;
 			FileInputStream source = null;
 			try {
 				source = new FileInputStream(file);
 				dest.create(source, true, null);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			} finally {
 				try {
 					source.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 			}
 
 		}
 
 	}
+
 
 	public Collection<? extends String> getNames() {
 		return names;

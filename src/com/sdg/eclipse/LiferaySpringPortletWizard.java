@@ -1,6 +1,8 @@
 package com.sdg.eclipse;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -27,35 +29,44 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 	private String portletTitle;
 	private boolean instanceable;
 
-
 	public LiferaySpringPortletWizard() {
 		super();
 	}
 
 	@Override
 	public boolean performFinish() {
-		gatherData();
+		try {
+			gatherData();
 
-		new ControllerClass(className, sourceFolder, pkg, viewName).create();
-		
-		new JspView(viewName, project).create();
-		
-		new SpringPortletContext(portletName, className, project, pkg).create();
-		
-		DependencySet dependencySet = new DependencySet(jars,project);
-		
-		dependencySet.addJars();
-		
-		new LiferayProperties(project, dependencySet).update();
-		
-		new LiferayDisplayXML(project, category, portletName).update();
-		
-		new WebXML(project).addSpringServlets();
-		
-		new PortletXML(project, portletName, portletDisplayName, portletTitle).update();
-		
-		new LiferayPortletXML(project, portletName, instanceable).update();
-		
+			new ControllerClass(className, sourceFolder, pkg, viewName)
+					.create();
+
+			new JspView(viewName, project).create();
+
+			new SpringPortletContext(portletName, className, project, pkg)
+					.create();
+
+			DependencySet dependencySet = new DependencySet(jars, project);
+
+			dependencySet.addJars();
+
+			new LiferayProperties(project, dependencySet).update();
+
+			new LiferayDisplayXML(project, category, portletName).update();
+
+			new WebXML(project).addSpringServlets();
+
+			new PortletXML(project, portletName, portletDisplayName,
+					portletTitle).update();
+
+			new LiferayPortletXML(project, portletName, instanceable).update();
+		} catch (Throwable e) {
+			ErrorDialog.openError(workbench.getActiveWorkbenchWindow()
+					.getShell(), "Error", e.getMessage(), new Status(
+					Status.ERROR, "newspringwizard",1,e.getMessage(), e.getCause()));
+			e.printStackTrace();
+		}
+
 		return true;
 	}
 

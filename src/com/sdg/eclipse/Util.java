@@ -30,8 +30,7 @@ public class Util {
 			classFile.create(new ByteArrayInputStream(str.getBytes()), false,
 					null);
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			resource.close();
 		}

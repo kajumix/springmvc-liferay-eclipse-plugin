@@ -17,7 +17,10 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -35,6 +38,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	private Button instanceAbleCheck;
 	private Text classText;
 	private Text jarDependenciesText;
+	
 
 	public boolean isInstanceable() {
 		return instanceAbleCheck.getSelection();
@@ -71,9 +75,13 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	protected LiferaySpringWizardPageOne(String pageName) {
 		super(pageName);
 		setTitle("Create Spring MVC Portlet for Liferay");
+		
+		
 	}
+	
+	
 
-	@SuppressWarnings("restriction")
+	
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = page.createContainer(parent, NUM_COLUMNS,
@@ -88,6 +96,26 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		createClass(container);
 		createJarLocation(container);
 
+		Listener changeListener = new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				updateButtons();
+				
+			}
+
+			
+		};
+		
+		Control[] controls = container.getChildren();
+		for (Control control : controls) {
+			if (control instanceof Text) {
+				control.addListener(SWT.Modify, changeListener);
+			} else if (control instanceof Combo) {
+				control.addListener(SWT.Selection, changeListener);
+			}
+		}
+		
 		setControl(container);
 
 	}
@@ -232,6 +260,8 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	private void updateClassText() {
 		classText.setText(page.convertToCamelCase(portletNameText.getText())
 				+ "Controller");
+		
+
 	}
 
 	private void createChooseProject(Composite container) {
@@ -247,16 +277,33 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		});
 
 		for (int i = 0; i < projects.length; i++) {
-			if (projects[i].isOpen()){
+			if (projects[i].isOpen()) {
 				combo.add(projects[i].getName());
 			}
 		}
 		page.makeLabel(container, "");
+		
 
 	}
 
 	public IProject[] getProjects() {
 		return ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		
+
+	}
+
+	@Override
+	public boolean canFlipToNextPage() {
+		return !(getSelectedProject() == null || getPortletName() == null
+				|| getPortletName().isEmpty() || getSourceFolder() == null
+				|| getSourceFolder().isEmpty() || getPackage() == null
+				|| getPackage().isEmpty() || getClassName() == null || getClassName()
+				.isEmpty());
+	}
+	
+
+	
+
+	private void updateButtons() {
+		getWizard().getContainer().updateButtons();
 	}
 }
