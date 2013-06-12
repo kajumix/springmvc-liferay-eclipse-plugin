@@ -36,6 +36,10 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	private Text classText;
 	private Text jarDependenciesText;
 
+	public boolean isInstanceable() {
+		return instanceAbleCheck.getSelection();
+	}
+
 	public String getPortletName() {
 		return portletNameText.getText();
 	}

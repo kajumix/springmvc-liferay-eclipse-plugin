@@ -25,6 +25,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 	private String category;
 	private String portletDisplayName;
 	private String portletTitle;
+	private boolean instanceable;
 
 
 	public LiferaySpringPortletWizard() {
@@ -53,6 +54,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		
 		new PortletXML(project, portletName, portletDisplayName, portletTitle).update();
 		
+		new LiferayPortletXML(project, portletName, instanceable).update();
 		
 		return true;
 	}
@@ -68,6 +70,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		category = pageOne.getCategory();
 		portletDisplayName = pageTwo.getportletDisplayName();
 		portletTitle = pageTwo.getPortletTitle();
+		instanceable = pageOne.isInstanceable();
 	}
 
 	@Override

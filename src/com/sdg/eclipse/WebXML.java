@@ -1,6 +1,5 @@
 package com.sdg.eclipse;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
