@@ -247,7 +247,9 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		});
 
 		for (int i = 0; i < projects.length; i++) {
-			combo.add(projects[i].getName());
+			if (projects[i].isOpen()){
+				combo.add(projects[i].getName());
+			}
 		}
 		page.makeLabel(container, "");
 
@@ -255,5 +257,6 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 
 	public IProject[] getProjects() {
 		return ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		
 	}
 }
