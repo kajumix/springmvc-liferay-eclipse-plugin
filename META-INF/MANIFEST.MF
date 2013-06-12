@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Newspringwizard
-Bundle-SymbolicName: newspringwizard; singleton:=true
+Bundle-SymbolicName: org.sdg.liferay.springportlet;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.sdg.eclipse.Activator
 Bundle-ActivationPolicy: lazy

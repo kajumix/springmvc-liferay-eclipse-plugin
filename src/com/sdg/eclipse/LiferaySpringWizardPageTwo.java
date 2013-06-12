@@ -17,7 +17,6 @@ public class LiferaySpringWizardPageTwo extends WizardPage {
 		setTitle("Portlet attributes");
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = page.createContainer(parent, 3, 9);

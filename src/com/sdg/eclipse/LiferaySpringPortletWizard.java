@@ -63,7 +63,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		} catch (Throwable e) {
 			ErrorDialog.openError(workbench.getActiveWorkbenchWindow()
 					.getShell(), "Error", e.getMessage(), new Status(
-					Status.ERROR, "newspringwizard",1,e.getMessage(), e.getCause()));
+					Status.ERROR, "org.sdg.liferay.springportlet",1,e.getMessage(), e.getCause()));
 			e.printStackTrace();
 		}
 
