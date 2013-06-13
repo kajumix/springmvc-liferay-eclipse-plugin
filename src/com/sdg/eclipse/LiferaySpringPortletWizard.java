@@ -90,7 +90,6 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		portletName = pageOne.getPortletName();
 		viewName = portletName;
 		project = pageOne.getSelectedProject();
-		pageOne.getJarDependencies();
 		category = pageOne.getCategory();
 		portletDisplayName = pageTwo.getportletDisplayName();
 		portletTitle = pageTwo.getPortletTitle();

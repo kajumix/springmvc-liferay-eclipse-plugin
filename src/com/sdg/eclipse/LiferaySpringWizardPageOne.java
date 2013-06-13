@@ -64,9 +64,6 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		return packageText.getText();
 	}
 
-	public String getJarDependencies() {
-		return jarDependenciesText.getText();
-	}
 
 	public String getCategory() {
 		return categoryText.getText();
@@ -94,7 +91,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		createBrowseSourceFolder(container);
 		createBrowsePackage(container);
 		createClass(container);
-		createJarLocation(container);
+		
 
 		Listener changeListener = new Listener() {
 
@@ -120,16 +117,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 
 	}
 
-	private void createJarLocation(Composite container) {
-		page.makeLabel(container, "Spring jars folder (optional)");
-		SelectionAdapter listener = new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handleBrowseJars();
-			}
-		};
-		jarDependenciesText = page.makeTextAndBrowse(container, listener);
 
-	}
 
 	private void createClass(Composite container) {
 		page.makeLabel(container, "Class");
