@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -29,6 +30,10 @@ public class DependencySet {
 		for (String name : set) {
 			names.add(new File(name).getName());
 		}
+	}
+	
+	public DependencySet(List<String> names) {
+		this.names=names;
 	}
 
 	public void addJars() {

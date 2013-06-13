@@ -1,5 +1,8 @@
 package com.sdg.eclipse;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -11,6 +14,18 @@ import org.eclipse.ui.IWorkbench;
 
 public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 
+	private static final List<String> names = Arrays.asList(new String[] {
+			"commons-fileupload.jar", "commons-io.jar", "spring-jdbc.jar",
+			"spring-aop.jar", "liferay-icu4j.jar", "spring-web-servlet.jar",
+			"spring-oxm.jar", "spring-core.jar", "commons-lang.jar",
+			"jstl-api.jar", "spring-expression.jar",
+			"spring-context-support.jar", "spring-web-struts.jar",
+			"liferay-yui-compressor.jar", "jstl-impl.jar",
+			"spring-transaction.jar", "spring-beans.jar", "alloy-taglib.jar",
+			"spring-context.jar", "spring-asm.jar", "spring-orm.jar",
+			"commons-beanutils.jar", "spring-aspects.jar",
+			"spring-web-portlet.jar", "commons-collections.jar",
+			"spring-web.jar", "spring-jms.jar" });
 	private LiferaySpringWizardPageOne pageOne;
 	private LiferaySpringWizardPageTwo pageTwo;
 
@@ -23,7 +38,6 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 	private String portletName;
 	private String viewName;
 	private IProject project;
-	private String jars;
 	private String category;
 	private String portletDisplayName;
 	private String portletTitle;
@@ -46,9 +60,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 			new SpringPortletContext(portletName, className, project, pkg)
 					.create();
 
-			DependencySet dependencySet = new DependencySet(jars, project);
-
-			dependencySet.addJars();
+			DependencySet dependencySet = new DependencySet(names);
 
 			new LiferayProperties(project, dependencySet).update();
 
@@ -62,8 +74,9 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 			new LiferayPortletXML(project, portletName, instanceable).update();
 		} catch (Throwable e) {
 			ErrorDialog.openError(workbench.getActiveWorkbenchWindow()
-					.getShell(), "Error", e.getMessage(), new Status(
-					Status.ERROR, "org.sdg.liferay.springportlet",1,e.getMessage(), e.getCause()));
+					.getShell(), "Error", e.getMessage(),
+					new Status(Status.ERROR, "org.sdg.liferay.springportlet",
+							1, e.getMessage(), e.getCause()));
 			e.printStackTrace();
 		}
 
@@ -77,7 +90,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 		portletName = pageOne.getPortletName();
 		viewName = portletName;
 		project = pageOne.getSelectedProject();
-		jars = pageOne.getJarDependencies();
+		pageOne.getJarDependencies();
 		category = pageOne.getCategory();
 		portletDisplayName = pageTwo.getportletDisplayName();
 		portletTitle = pageTwo.getPortletTitle();

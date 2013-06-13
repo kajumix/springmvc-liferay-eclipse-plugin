@@ -37,7 +37,10 @@ public class LiferayProperties {
 			properties.load(propertiesInputStream);
 			String portalDependencies = (String) properties
 					.get("portal-dependency-jars");
-			Set<String> existingDependenciesSet = new HashSet<String>(Arrays.asList(portalDependencies.split(",")));
+			Set<String> existingDependenciesSet = new HashSet<String>();
+			if (portalDependencies!=null) {
+				existingDependenciesSet.addAll(Arrays.asList(portalDependencies.split(",")));
+			} 
 			existingDependenciesSet.addAll(dependencies.getNames());
 			portalDependencies = commaSeparated(existingDependenciesSet);
 			properties

@@ -5,13 +5,13 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            name="Liferay"
-            id="liferayportletwizard">
+            name="sdg"
+            id="sdg">
       </category>
       <wizard
             name="Liferay Spring portlet"
             icon="icons/sample.gif"
-            category="liferay"
+            category="sdg"
             class="com.sdg.eclipse.LiferaySpringPortletWizard"
             id="com.sdg.eclipse.liferay.spring">
       </wizard>
