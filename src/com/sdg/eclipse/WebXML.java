@@ -8,7 +8,7 @@ import org.w3c.dom.NodeList;
 
 public class WebXML {
 
-	private static final String DISPATCHER_URL_PATTERN = ".htm";
+	
 	private static final String DISPATCHER_SERVLET = "dispatcher";
 	private static final String VIEW_URL_PATTERN = "/WEB-INF/servlet/view";
 	private static final String VIEW_SERVLET = "view-servlet";

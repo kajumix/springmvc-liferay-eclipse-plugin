@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
@@ -37,7 +36,7 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 	private Text categoryText;
 	private Button instanceAbleCheck;
 	private Text classText;
-	private Text jarDependenciesText;
+
 	
 
 	public boolean isInstanceable() {
@@ -204,22 +203,8 @@ public class LiferaySpringWizardPageOne extends WizardPage {
 		}
 	}
 
-	private void handleBrowseJars() {
-		FileDialog dialog = new FileDialog(getShell(), SWT.MULTI);
-		dialog.setFilterExtensions(new String[] { "*.jar" });
-		dialog.open();
-		jarDependenciesText.setText(getJarList(dialog.getFilterPath(),
-				dialog.getFileNames()));
 
-	}
 
-	private String getJarList(String filterPath, String[] fileNames) {
-		String jarList = "";
-		for (String string : fileNames) {
-			jarList += filterPath + "\\" + string + ",";
-		}
-		return jarList;
-	}
 
 	private void createPortletName(Composite container) {
 		page.makeLabel(container, "Portlet name");
