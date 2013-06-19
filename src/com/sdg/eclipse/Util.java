@@ -13,8 +13,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 
 public class Util {
-	
-	
 
 	public static IFile createFile(String folderStr, String fileName,
 			String resourceStr, Map<String, String> replaceMap) {
@@ -24,7 +22,7 @@ public class Util {
 		Resource resource = new Resource(resourceStr);
 		try {
 			String str = getString(resource.getStream());
-			if (replaceMap!=null) {
+			if (replaceMap != null) {
 				str = replace(str, replaceMap);
 			}
 			classFile.create(new ByteArrayInputStream(str.getBytes()), false,
@@ -36,7 +34,7 @@ public class Util {
 		}
 		return classFile;
 	}
-	
+
 	private static String replace(String string, Map<String, String> replaceMap) {
 		Set<String> keySet = replaceMap.keySet();
 		for (String regex : keySet) {
@@ -44,21 +42,28 @@ public class Util {
 		}
 		return string;
 	}
-	
+
 	private static String getString(InputStream is) {
 		Scanner scanner = null;
 		try {
 			scanner = new Scanner(is).useDelimiter("\\A");
 			return scanner.hasNext() ? scanner.next() : "";
-		}finally {
+		} finally {
 			scanner.close();
 		}
-		
 
 	}
 
 	public static void createIFNeeded(String folder) {
-		// TODO Auto-generated method stub
-		
+		IFolder jspFolder = ResourcesPlugin.getWorkspace().getRoot()
+				.getFolder(new Path(folder));
+		if (!jspFolder.exists()) {
+			try {
+				jspFolder.create(true, true, null);
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 	}
 }

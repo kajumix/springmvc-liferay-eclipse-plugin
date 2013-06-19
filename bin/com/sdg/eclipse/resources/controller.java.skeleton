@@ -3,6 +3,10 @@ package {pkg};
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+
  
 /**
  * View controller.
@@ -12,7 +16,7 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 @Controller(value="{class}")
 @RequestMapping("VIEW")
 public class {class} {
- 
+	static Log _log = LogFactoryUtil.getLog({class}.class); 
  
   /**
    * Render.
@@ -21,6 +25,7 @@ public class {class} {
    */
   @RenderMapping
   public String render() {
+  	_log.info("Returning view {jsp}");
     return "{jsp}";
   }
 }
