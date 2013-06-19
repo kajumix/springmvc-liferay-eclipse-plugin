@@ -33,7 +33,7 @@ public class WebXML {
 
 		if (needDispatcher) {
 			addServlet(doc, DISPATCHER_CLASS, DISPATCHER_SERVLET);
-			addServletMapping(doc, DISPATCHER_URL_PATTERN, DISPATCHER_SERVLET);
+//			addServletMapping(doc, DISPATCHER_URL_PATTERN, DISPATCHER_SERVLET);
 		}
 
 		if (needDispatcher || needViewRender) {
