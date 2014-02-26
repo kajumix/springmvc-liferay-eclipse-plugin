@@ -1,4 +1,4 @@
-package com.sdg.eclipse;
+package com.solutiondesign.eclipse.liferay.springmvcwizard;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +12,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
+public class LiferaySpringMvcPortletWizard extends Wizard implements INewWizard {
 
 	private static final List<String> names = Arrays.asList(new String[] {
 			"commons-fileupload.jar", "commons-io.jar", "spring-jdbc.jar",
@@ -43,7 +43,7 @@ public class LiferaySpringPortletWizard extends Wizard implements INewWizard {
 	private String portletTitle;
 	private boolean instanceable;
 
-	public LiferaySpringPortletWizard() {
+	public LiferaySpringMvcPortletWizard() {
 		super();
 	}
 

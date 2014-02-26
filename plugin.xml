@@ -5,16 +5,27 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            name="sdg"
-            id="sdg">
+            name="Liferay"
+            id="com.liferay.ide.newWizards">
       </category>
       <wizard
-            name="Liferay Spring portlet"
+            name="Liferay Spring MVC Portlet by SolutionDesign.com"
             icon="icons/sample.gif"
-            category="sdg"
-            class="com.sdg.eclipse.LiferaySpringPortletWizard"
-            id="com.sdg.eclipse.liferay.spring">
+            category="com.liferay.ide.newWizards"
+            class="com.solutiondesign.eclipse.liferay.springmvcwizard.LiferaySpringMvcPortletWizard"
+            id="com.solutiondesign.eclipse.liferay.springmvcwizard">
       </wizard>
+	  <!-- menuContribution
+	         locationURI=
+	         "popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=additions">
+	         <command
+	               commandId="myplugin.command.mycommand"
+	               icon="icons/etool16/mycommand.png"
+	               label="Run mycommand"
+	               mnemonic="M1+P"
+	               tooltip="Do something with this project">
+	         </command>
+	    </menuContribution -->
    </extension>
 
 </plugin>

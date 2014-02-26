@@ -1,4 +1,4 @@
-package com.sdg.eclipse;
+package com.solutiondesign.eclipse.liferay.springmvcwizard;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

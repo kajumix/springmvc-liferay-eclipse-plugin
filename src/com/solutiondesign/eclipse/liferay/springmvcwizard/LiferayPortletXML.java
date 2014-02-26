@@ -1,4 +1,4 @@
-package com.sdg.eclipse;
+package com.solutiondesign.eclipse.liferay.springmvcwizard;
 
 import org.eclipse.core.resources.IProject;
 import org.w3c.dom.Document;

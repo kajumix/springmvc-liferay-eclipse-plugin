@@ -1,4 +1,4 @@
-package com.sdg.eclipse;
+package com.solutiondesign.eclipse.liferay.springmvcwizard;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
